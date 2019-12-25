@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: springcloudgateway
+  security:
+    user:
+      name: test
+      password: test
+#enable this for service discovery
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+
+      routes:
+        - id: add_request_header1_route
+          uri: http://localhost:9090
+          predicates:
+              - Path=/app/bgdemo
+          filters:
+                - StripPrefix=1
+                - AddRequestHeader=X-Request-Red, bgdemo
+
+        - id: add_request_header_route
+          uri: http://localhost:9090
+          predicates:
+              - Path=/open/bgdemo
+          filters:
+                - StripPrefix=1
+                - AddRequestHeader=X-Request-Red, bgdemo
+
+
+
+  main:
+    allow-bean-definition-overriding: true
+logging.level:
+  root: INFO
+
